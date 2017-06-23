@@ -69,10 +69,31 @@ var ffXAuth = new Fanfou({
 ffXAuth.xauth(function (e, res) {
   if (e) console.error(e)
   else {
+    // oauth_token & oauth_token_secret
     console.log(res)
-    ffXAuth.post('/statuses/update', {status: 'hello'}, function (e, timeline) {
-      if (e) console.log(e)
-      else console.log('XAuth get public timeline ok.')
+
+    // post
+    ffXAuth.post('/statuses/update', {status: 'hello'}, function (e, res) {
+      if (e) console.log(e.message)
+      else console.log(res)
     })
+
+    // get
+    ffXAuth.get('/statuses/public_timeline', {count: 1}, function (e, res) {
+      if (e) console.log(e.message)
+      else console.log(res)
+    })
+
+    // upload
+    ffXAuth.upload(
+      fs.createReadStream(__dirname + '/img/parentheses.png'),
+      Math.random().toString(36).substr(2, 8),
+      function (e, res, status) {
+        if (e) console.error(e.message)
+        else {
+          console.log('Photo upload ok.')
+        }
+      }
+    )
   }
 })
